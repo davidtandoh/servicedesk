@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>All Services</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+       <link rel="stylesheet" href="font-awesome-4.5.0/css/font-awesome.min.css">
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+      <script src="jquery-2.1.4.min.js"></script>
+      <script>
+           $(document).ready(function()
+            {
+                getServicelist();
+            });
+          
+          var prov_id; 
+          
+          function sendRequest(u){
+            var obj=$.ajax({url:u,async:false});
+            var result=$.parseJSON(obj.responseText);
+            return result;	
+        }
+          
+          function getServicelist(){
+               var sid = window.localStorage.getItem("serviceid");
+            var url = "http://cs.ashesi.edu.gh/class2016/david-tandoh/MobileWeb/servicedesk/controller.php?cmd=7&serviceid="+sid+"";
+            var obj = sendRequest(url);   
+            if(obj.result == 1){
+                var output = "";
+            
+                 for(var i= 0 ;i < obj.serviceproviders.length; i++){
+                    output += "<button type='button' class='list-group-item'>"+obj.serviceproviders[i].providername+"<span class='badge' data-toggle='modal' data-target='#myModal' onclick='getproviderid("+obj.serviceproviders[i].providerid+")'>Book Appointment</span><br /><p>Phone: "+obj.serviceproviders[i].phone+"<br />Location: "+obj.serviceproviders[i].location+"</p></button>";
+     
+                     
+                
+                    $("#servicelist").html(output);
+                     //$("#mylistgroup").refresh;
+                 }
+                
+            }
+            else{
+            }
+          }
+          
+          function getproviderid(id){
+              prov_id=id;
+              
+          }
+          
+          function makeBooking(){
+              var date = $("#date").val();
+              var time = $("#time").val();
+              var thetime = date+" "+time;
+              
+              var userid = window.localStorage.getItem("userid");
+              
+                var url = "controller.php?cmd=3&userid="+userid+"&providerid="+prov_id+"&time="+thetime+"";
+            var obj = sendRequest(url);   
+            if(obj.result == 1){
+                     //$("#mylistgroup").refresh;
+                alert("yes");
+                 }
+                
+            else{
+            }
+              
+          }
+          
+          
+      </script>
+  </head>
+  <body>
+      <div class="container">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Services</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="home.html"><i class="fa fa-home"></i> Home</a></li>
+              <li><a href="services.html"><i class="fa fa-tasks"></i> Services</a></li>
+              <li><a href="bookings.html"><i class="fa fa-calendar-check-o"></i> Manage my bookings</a></li>
+                <li><a href="index.html"><i class="fa fa-sign-out"></i> Logout</a></li>
+              <!--<li><a href="../navbar-fixed-top/">Fixed top</a></li>-->
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+        <div class="list-group" id="servicelist">
+        </div>
+      <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Select date and time for appointment</h4>
+        </div>
+        <div class="modal-body">
+            <p>Select a date:</p>
+          <input size="16" type="date" value="" id="date">
+                <p>Select a time:</p>
+          <input size="16" type="time" value="" id="time"> 
+        </div>
+        <div class="modal-footer">
+            <button size="16" class="btn btn-default" type="button" id="book" onclick="makeBooking()" data-dismiss="modal">Book</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+      </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

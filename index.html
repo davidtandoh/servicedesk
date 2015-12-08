@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>All Services</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="font-awesome-4.5.0/css/font-awesome.min.css">
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+      <script src="jquery-2.1.4.min.js"></script>
+      <script>
+            function sendRequest(u){
+            var obj=$.ajax({url:u,async:false});
+            var result=$.parseJSON(obj.responseText);
+            return result;	
+        }
+        
+          function validateuser(){
+                      
+              var email = $("#email").val();
+              var pwd = $("#password").val();
+            var url = "http://cs.ashesi.edu.gh/class2016/david-tandoh/MobileWeb/servicedesk/controller.php?cmd=2&email="+email+"&password="+pwd+"";
+             var obj = sendRequest(url);
+              alert(obj.length);
+            if(obj.result == 1){
+                login(obj.user[0].userid);
+            }
+            else{
+                  //alert("yawa");
+              }
+          }
+            
+            function login(userid){
+                 window.localStorage.setItem("userid", userid);
+                window.location="home.html"; 
+            }
+      </script>
+  </head>
+  <body>
+      <div class="container">
+                <img src="images/servicedesk.png" class="img-responsive" style="width:200px;height:200px;margin:auto;top:0;left:0;bottom:0;right:0;">
+          <h1>Login to Service Desk</h1>
+      <form>
+          <ul>
+              <li>
+          <input type="email" id="email" placeholder="Email" class="form-control"/>
+              </li>
+              <li>
+          <input type ="password" id="password" placeholder="Password" class="form-control"/>
+              </li>
+          <input type="button" value="Login"  class="btn btn-default" onclick="validateuser()"/>
+          </ul>
+      </form>
+      </div>
+      <footer>
+  <p>Developed by: Tanoe Concepts®</p>
+  <p>Contact information: <a href="mailto:someone@example.com">
+  tandohdavid@gmail.com</a>.</p>
+</footer>
+      
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
