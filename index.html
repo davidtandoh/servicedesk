@@ -20,6 +20,8 @@
     <![endif]-->
       <script src="jquery-2.1.4.min.js"></script>
       <script>
+          $.support.cors = true;
+          
             function sendRequest(u){
             var obj=$.ajax({url:u,async:false});
             var result=$.parseJSON(obj.responseText);
